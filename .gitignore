@@ -30,5 +30,6 @@ Thumbs.db
 *.log
 
 # Docker (volumes locais, se você mapear algum)
-# postgres_data/
-# qdrant_storage/
+postgres_data/
+qdrant_data/
+ollama_data/
