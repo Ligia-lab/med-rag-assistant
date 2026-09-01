@@ -6,6 +6,25 @@ Assistente médico com RAG (Retrieval-Augmented Generation) e Agentes, 100% open
 
 ---
 
+## Status Atual do Projeto
+ 
+**Em desenvolvimento — Fase 1 (RAG aberto)**
+ 
+O que já está pronto:
+- ✅ Esqueleto do projeto (estrutura de pastas `src/`)
+- ✅ Infraestrutura via Docker Compose (Postgres e Qdrant validados; Ollama usado nativamente)
+- ✅ Ambiente virtual (venv) configurado e isolado
+- ✅ Pipeline de extração de texto de PDFs de bulas (via `pdfplumber`)
+- ✅ Chunking estruturado por seção (split pelas seções numeradas do padrão Anvisa — RDC 47/2009), com limpeza de rodapé repetido
+
+Próximos passos:
+- ⏳ Geração de embeddings dos chunks via Ollama (`nomic-embed-text`)
+- ⏳ Persistência dos vetores no Qdrant
+- ⏳ Endpoint `POST /perguntar` no FastAPI
+- ⏳ Integração com o bot do Telegram
+
+---
+
 ## Visão Geral
 
 O projeto é dividido em duas fases evolutivas:
@@ -120,9 +139,7 @@ Sistema de verificação estruturada, com múltiplos agentes colaborando, reapro
 
 ---
 
-## Por que o Telegram (e não Twilio)
-
-O Twilio oferece apenas um trial temporário (30 dias, unidades limitadas, só envia para números verificados, sem mensagens customizadas). Não é gratuito de fato para uso contínuo.
+## Por que o Telegram 
 
 O **Telegram Bot API** é:
 - Totalmente gratuito, sem trial, sem cartão de crédito
@@ -134,28 +151,36 @@ O **Telegram Bot API** é:
 
 ## Estrutura de Pastas
 
+
 ```
 med-rag-assistant/
+├── bulas/                # PDFs de bulas usados nos testes de ingestão
 ├── src/
-│   ├── agents/          # Agente Buscador, Agregador, Explicador (Fase 2)
-│   ├── app/             # bootstrap/inicialização da aplicação
-│   ├── config/          # configurações e variáveis de ambiente
-│   ├── prompt/          # templates e engenharia de prompt
-│   ├── schemas/         # modelos Pydantic (request/response)
-│   ├── services/        # regras de negócio (RAG, ingestão, interações)
-│   ├── tools/           # tools utilizadas pelos agentes (inclui MCP)
-│   └── utils/           # funções auxiliares
-├── .env
-├── .example.env
+│   ├── agents/           # Agente Buscador, Agregador, Explicador (Fase 2)
+│   ├── app/              # bootstrap/inicialização da aplicação
+│   ├── config/           # configurações e variáveis de ambiente
+│   ├── ingestion.py      # extração de PDF + chunking por seção (em desenvolvimento)
+│   ├── prompt/           # templates e engenharia de prompt
+│   ├── schemas/
+│   │   ├── request.py    # modelos Pydantic de entrada (request)
+│   │   └── response.py   # modelos Pydantic de saída (response)
+│   ├── services/         # regras de negócio (RAG, ingestão, interações)
+│   ├── tools/            # tools utilizadas pelos agentes (inclui MCP)
+│   └── utils/            # funções auxiliares
+├── venv/                 # ambiente virtual (não versionado)
+├── docker-compose.yml    # Postgres, Qdrant (Ollama roda nativamente)
+├── .env                  # variáveis de ambiente reais (não versionado)
+├── .example.env          # exemplo de variáveis de ambiente (versionado)
 ├── requirements.txt
 └── README.md
 ```
 
----
 
 ## Como Rodar
 
+
 ```bash
+
 # 1. Clone o repositório
 git clone https://github.com/<seu-usuario>/med-rag-assistant.git
 cd med-rag-assistant
@@ -183,16 +208,16 @@ A documentação interativa da API estará disponível em `http://localhost:8000
 
 ## Roadmap
 
-| Etapa | Entrega |
-|---|---|
-| 1 | Setup de infra (Docker Compose: Postgres, Qdrant, Ollama) |
-| 2 | Pipeline de ingestão de bulas/PubMed |
-| 3 | Endpoint `/perguntar` + bot Telegram básico |
-| 4 | Testes e documentação da Fase 1 |
-| 5 | Agentes Buscador/Agregador/Explicador |
-| 6 | Endpoint `/verificar-interacoes` + comando no bot |
-| 7 | (Opcional) Exposição via MCP server |
-| 8 | Documentação final, README com GIFs de demonstração |
+| Etapa | Entrega | Status |
+|---|---|---|
+| 1 | Setup de infra (Docker Compose: Postgres, Qdrant, Ollama) | ✅ Concluído |
+| 2 | Pipeline de ingestão de bulas/PubMed | 🔄 Em andamento (extração + chunking prontos; embeddings pendentes) |
+| 3 | Endpoint `/perguntar` + bot Telegram básico | ⏳ Pendente |
+| 4 | Testes e documentação da Fase 1 | ⏳ Pendente |
+| 5 | Agentes Buscador/Agregador/Explicador | ⏳ Pendente |
+| 6 | Endpoint `/verificar-interacoes` + comando no bot | ⏳ Pendente |
+| 7 | (Opcional) Exposição via MCP server | ⏳ Pendente |
+| 8 | Documentação final, README com GIFs de demonstração | ⏳ Pendente |
 
 ---
 
