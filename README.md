@@ -45,7 +45,7 @@ A interação com o usuário final acontece via **Telegram Bot** (gratuito, sem 
 | Banco vetorial | **Qdrant** (ou pgvector) | Busca semântica |
 | Banco relacional | **PostgreSQL** | Metadados, histórico de conversas, usuários |
 | API | **FastAPI** | Exposição dos endpoints |
-| Orquestração de agentes | **Strands Agents SDK** | Coordenação dos agentes na Fase 2 |
+| Orquestração de agentes | **Langchain / Langgraph** | Coordenação dos agentes na Fase 2 |
 | Canal de mensagens | **Telegram Bot API** (python-telegram-bot) | Interface gratuita com o usuário final |
 | Fila/Assíncrono | Celery + Redis | Ingestão de dados em background |
 | Infra | Docker Compose | Orquestração de todos os serviços localmente |
